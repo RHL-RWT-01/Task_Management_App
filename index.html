@@ -4,37 +4,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task Manager</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <header>
-            <h1>Task Manager</h1>
+        <h1>Task Manager</h1>
+        <div class="task-input">
+            <input type="text" id="task-input" placeholder="Enter task description" />
+            <input type="date" id="due-date" />
+            <select id="priority-level">
+                <option value="low">Low Priority</option>
+                <option value="medium">Medium Priority</option>
+                <option value="high">High Priority</option>
+            </select>
+            <select id="task-category">
+                <option value="work">Work</option>
+                <option value="personal">Personal</option>
+                <option value="shopping">Shopping</option>
+            </select>
             <button id="add-task-btn">Add Task</button>
-        </header>
-        <main>
-            <section id="task-container">
-                <!-- Tasks will be dynamically inserted here -->
-            </section>
-        </main>
-        <div id="task-modal" class="modal">
-            <div class="modal-content">
-                <span class="close-btn">&times;</span>
-                <h2 id="modal-title">Add Task</h2>
-                <form id="task-form">
-                    <input type="text" id="task-title" placeholder="Task Title" required>
-                    <textarea id="task-description" placeholder="Task Description"></textarea>
-                    <input type="date" id="task-due-date">
-                    <select id="task-category">
-                        <option value="Work">Work</option>
-                        <option value="Personal">Personal</option>
-                        <option value="Others">Others</option>
-                    </select>
-                    <button type="submit">Save Task</button>
-                </form>
-            </div>
         </div>
+        <ul id="task-list"></ul>
     </div>
+
     <script src="script.js"></script>
 </body>
 </html>

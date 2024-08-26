@@ -1,96 +1,95 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const taskContainer = document.getElementById('task-container');
-    const addTaskBtn = document.getElementById('add-task-btn');
-    const taskModal = document.getElementById('task-modal');
-    const closeModalBtn = document.querySelector('.close-btn');
-    const taskForm = document.getElementById('task-form');
+    const taskInput = document.getElementById('task-input');
+    const dueDateInput = document.getElementById('due-date');
+    const priorityInput = document.getElementById('priority-level');
+    const categoryInput = document.getElementById('task-category');
+    const addTaskButton = document.getElementById('add-task-btn');
+    const taskList = document.getElementById('task-list');
 
-    let tasks = [];
-    let editingTaskIndex = null;
+    addTaskButton.addEventListener('click', addTask);
 
-    function renderTasks() {
-        taskContainer.innerHTML = '';
-        tasks.forEach((task, index) => {
-            const taskElement = document.createElement('div');
-            taskElement.classList.add('task-item');
-            taskElement.draggable = true;
-            taskElement.innerHTML = `
-                <h3>${task.title}</h3>
-                <p>${task.description}</p>
-                <p>Due Date: ${task.dueDate}</p>
-                <p>Category: ${task.category}</p>
-                <button onclick="editTask(${index})">Edit</button>
-                <button onclick="deleteTask(${index})">Delete</button>
-            `;
-            taskElement.addEventListener('dragstart', handleDragStart);
-            taskElement.addEventListener('dragover', handleDragOver);
-            taskElement.addEventListener('drop', handleDrop);
-            taskContainer.appendChild(taskElement);
-        });
-    }
+    function addTask() {
+        const taskDescription = taskInput.value.trim();
+        const dueDate = dueDateInput.value;
+        const priority = priorityInput.value;
+        const category = categoryInput.value;
 
-    function openModal() {
-        document.getElementById('modal-title').textContent = editingTaskIndex === null ? 'Add Task' : 'Edit Task';
-        taskModal.style.display = 'block';
-    }
-
-    function closeModal() {
-        taskModal.style.display = 'none';
-        taskForm.reset();
-        editingTaskIndex = null;
-    }
-
-    function handleFormSubmit(event) {
-        event.preventDefault();
-        const title = document.getElementById('task-title').value;
-        const description = document.getElementById('task-description').value;
-        const dueDate = document.getElementById('task-due-date').value;
-        const category = document.getElementById('task-category').value;
-
-        if (editingTaskIndex === null) {
-            tasks.push({ title, description, dueDate, category });
-        } else {
-            tasks[editingTaskIndex] = { title, description, dueDate, category };
+        if (!taskDescription) {
+            alert("Please enter a task description.");
+            return;
         }
 
-        closeModal();
-        renderTasks();
+        // Create task item elements
+        const taskItem = document.createElement('li');
+        taskItem.className = 'task-item';
+
+        const taskText = document.createElement('span');
+        taskText.textContent = taskDescription;
+
+        const taskDetails = document.createElement('div');
+        taskDetails.className = 'task-details';
+
+        const taskDueDate = document.createElement('span');
+        taskDueDate.textContent = `Due: ${dueDate}`;
+        
+        const taskPriority = document.createElement('span');
+        taskPriority.textContent = `Priority: ${priority}`;
+
+        const taskCategory = document.createElement('span');
+        taskCategory.textContent = `Category: ${category}`;
+
+        taskDetails.appendChild(taskDueDate);
+        taskDetails.appendChild(taskPriority);
+        taskDetails.appendChild(taskCategory);
+
+        const buttonContainer = document.createElement('div');
+        buttonContainer.className = 'buttons';
+
+        const completeButton = document.createElement('button');
+        completeButton.textContent = 'Complete';
+        completeButton.className = 'complete-btn';
+        completeButton.addEventListener('click', () => {
+            taskItem.classList.toggle('completed');
+        });
+
+        const editButton = document.createElement('button');
+        editButton.textContent = 'Edit';
+        editButton.className = 'edit-btn';
+        editButton.addEventListener('click', () => {
+            editTask(taskItem, taskText, taskDueDate, taskPriority, taskCategory);
+        });
+
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.addEventListener('click', () => {
+            taskList.removeChild(taskItem);
+        });
+
+        buttonContainer.appendChild(completeButton);
+        buttonContainer.appendChild(editButton);
+        buttonContainer.appendChild(deleteButton);
+
+        taskItem.appendChild(taskText);
+        taskItem.appendChild(taskDetails);
+        taskItem.appendChild(buttonContainer);
+        taskList.appendChild(taskItem);
+
+        // Clear input fields after adding task
+        taskInput.value = '';
+        dueDateInput.value = '';
+        priorityInput.value = 'low';
+        categoryInput.value = 'work';
     }
 
-    function editTask(index) {
-        editingTaskIndex = index;
-        const task = tasks[index];
-        document.getElementById('task-title').value = task.title;
-        document.getElementById('task-description').value = task.description;
-        document.getElementById('task-due-date').value = task.dueDate;
-        document.getElementById('task-category').value = task.category;
-        openModal();
+    function editTask(taskItem, taskText, taskDueDate, taskPriority, taskCategory) {
+        const newDescription = prompt("Edit task description:", taskText.textContent);
+        const newDueDate = prompt("Edit due date:", taskDueDate.textContent.replace("Due: ", ""));
+        const newPriority = prompt("Edit priority (low, medium, high):", taskPriority.textContent.replace("Priority: ", ""));
+        const newCategory = prompt("Edit category (work, personal, shopping):", taskCategory.textContent.replace("Category: ", ""));
+
+        if (newDescription) taskText.textContent = newDescription;
+        if (newDueDate) taskDueDate.textContent = `Due: ${newDueDate}`;
+        if (newPriority) taskPriority.textContent = `Priority: ${newPriority}`;
+        if (newCategory) taskCategory.textContent = `Category: ${newCategory}`;
     }
-
-    function deleteTask(index) {
-        tasks.splice(index, 1);
-        renderTasks();
-    }
-
-    function handleDragStart(event) {
-        event.dataTransfer.setData('text/plain', event.target.textContent);
-        event.target.classList.add('dragging');
-    }
-
-    function handleDragOver(event) {
-        event.preventDefault();
-    }
-
-    function handleDrop(event) {
-        event.preventDefault();
-        const draggedData = event.dataTransfer.getData('text/plain');
-        event.target.classList.remove('dragging');
-        // Logic to handle drop (e.g., reorder tasks) goes here
-    }
-
-    addTaskBtn.addEventListener('click', openModal);
-    closeModalBtn.addEventListener('click', closeModal);
-    taskForm.addEventListener('submit', handleFormSubmit);
-
-    renderTasks();
 });
