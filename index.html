@@ -17,17 +17,16 @@
             <option value="low">Low Priority</option>
         </select>
         <ul id="task-list">
-            <!-- Example Task Item -->
-            <li class="task-item">
-                <input type="text" class="task-description" value="Sample Task" readonly>
-                <span class="task-due-date">2024-08-30</span>
-                <span class="task-priority">High</span>
-                <button class="edit-task">Edit</button>
-                <button class="save-task" style="display:none;">Save</button>
-                <button class="delete-task">Delete</button>
-            </li>
+           
         </ul>
-        <button id="add-task">Add Task</button>
+        <form id="add-task-form">
+            <div class="add-task-container">
+                <input type="text" id="new-task-description" placeholder="New Task Description" required>
+                <input type="date" id="new-task-date" placeholder="Due Date">
+                <input type="time" id="new-task-time" placeholder="Due Time">
+                <button type="submit" id="add-task">Add Task</button>
+            </div>
+        </form>
     </div>
     <script src="script.js"></script>
 </body>
