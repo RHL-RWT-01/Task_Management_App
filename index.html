@@ -17,13 +17,15 @@
             <option value="low">Low Priority</option>
         </select>
         <ul id="task-list">
-           
+            <!-- Task items will be dynamically added here -->
         </ul>
         <form id="add-task-form">
             <div class="add-task-container">
                 <input type="text" id="new-task-description" placeholder="New Task Description" required>
-                <input type="date" id="new-task-date" placeholder="Due Date">
-                <input type="time" id="new-task-time" placeholder="Due Time">
+                <label for="new-task-date">Due Date:</label>
+                <input type="date" id="new-task-date">
+                <label for="new-task-time">Due Time:</label>
+                <input type="time" id="new-task-time">
                 <button type="submit" id="add-task">Add Task</button>
             </div>
         </form>
