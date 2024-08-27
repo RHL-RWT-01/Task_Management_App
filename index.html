@@ -4,29 +4,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task Manager</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <h1>Task Manager</h1>
-        <div class="task-input">
-            <input type="text" id="task-input" placeholder="Enter task description" />
-            <input type="date" id="due-date" />
-            <select id="priority-level">
-                <option value="low">Low Priority</option>
-                <option value="medium">Medium Priority</option>
-                <option value="high">High Priority</option>
-            </select>
-            <select id="task-category">
-                <option value="work">Work</option>
-                <option value="personal">Personal</option>
-                <option value="shopping">Shopping</option>
-            </select>
-            <button id="add-task-btn">Add Task</button>
-        </div>
-        <ul id="task-list"></ul>
+        <input type="text" id="search-bar" placeholder="Search tasks...">
+        <select id="filter">
+            <option value="all">All</option>
+            <option value="high">High Priority</option>
+            <option value="medium">Medium Priority</option>
+            <option value="low">Low Priority</option>
+        </select>
+        <ul id="task-list">
+            <!-- Example Task Item -->
+            <li class="task-item">
+                <input type="text" class="task-description" value="Sample Task" readonly>
+                <span class="task-due-date">2024-08-30</span>
+                <span class="task-priority">High</span>
+                <button class="edit-task">Edit</button>
+                <button class="save-task" style="display:none;">Save</button>
+                <button class="delete-task">Delete</button>
+            </li>
+        </ul>
+        <button id="add-task">Add Task</button>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
